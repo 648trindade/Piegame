@@ -24,11 +24,14 @@
     #define __COLOR_H__
     
 #include "defines.h"
+#include <string>
 
 class Piegame::Color{
     public:
+        Color(Uint8, Uint8, Uint8);
         Color(Uint8, Uint8, Uint8, Uint8);
         Color(int);
+        Color(std::string);
         
         Uint8 r, g, b, a;
         
@@ -39,6 +42,14 @@ class Piegame::Color{
         double* normalize();
         Color correct_gamma(double);
         // set_length
+        
+        Color operator+(Color c);
+        Color operator-(Color c);
+        Color operator*(Color c);
+        Color operator/(Color c);
+        Color operator%(Color c);
+        Color operator~();
+        bool operator==(Color c);
 };
 
 #endif

@@ -45,8 +45,11 @@
 #include <cstdlib>
 #include <algorithm>
 #include <cmath>
+#include <sstream>
 
 using namespace Piegame;
+
+Color::Color(Uint8 r, Uint8 g, Uint8 b) : Color(r, g, b, 255) {}
 
 Color::Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a) : r(r), g(g), b(b), a(a) {}
 
@@ -55,6 +58,22 @@ Color::Color(int hex){
     g = (hex & 0x00FF0000) >> 16;
     b = (hex & 0x0000FF00) >> 8;
     a = hex & 0x000000FF;
+}
+
+Color::Color(std::string html){
+    Color c(0,0,0,0);
+    if (html.size() == 9){
+        html = html.substr(1,8);
+        int x;   
+        std::stringstream ss;
+        ss << std::hex << html;
+        ss >> x;
+        c = c + Color(x);
+    }
+    r = c.r;
+    g = c.g;
+    b = c.b;
+    a = c.a;
 }
 
 double* Color::cmy(){
@@ -201,4 +220,44 @@ Color Color::correct_gamma(double gamma){
         (Uint8) (frgba[3] * 255 + .5));
     
     return Color(rgba[0], rgba[1], rgba[2], rgba[3]);
+}
+
+Color Color::operator+(Color c){
+    return Color((r+c.r<256)? r+c.r : 255,
+                 (g+c.g<256)? g+c.g : 255,
+                 (b+c.b<256)? b+c.b : 255,
+                 (a+c.a<256)? a+c.a : 255);
+}
+
+Color Color::operator-(Color c){
+    return Color((r-c.r>=0)? r-c.r : 0,
+                 (g-c.g>=0)? g-c.g : 0,
+                 (b-c.b>=0)? b-c.b : 0,
+                 (a-c.a>=0)? a-c.a : 0);
+}
+
+Color Color::operator*(Color c){
+    return Color((r*c.r<256)? r*c.r : 255,
+                 (g*c.g<256)? g*c.g : 255,
+                 (b*c.b<256)? b*c.b : 255,
+                 (a*c.a<256)? a*c.a : 255);
+}
+
+Color Color::operator/(Color c){
+    return Color((c.r)? r/c.r : 0,
+                 (c.g)? g/c.g : 0,
+                 (c.b)? b/c.b : 0,
+                 (c.a)? a/c.a : 0);
+}
+
+Color Color::operator%(Color c){
+    return Color(r%c.r, g%c.g, b%c.b, a%c.a);
+}
+
+Color Color::operator~(){
+    return Color(255-r, 255-g, 255-b, 255-a);
+}
+
+bool Color::operator==(Color c){
+    return r==c.r && g==c.g && b==c.b && a == c.a;
 }
