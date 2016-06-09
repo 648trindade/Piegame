@@ -83,9 +83,9 @@ class Piegame::Rect{
         int collidelist(vector<Rect>&);
         list<Rect>::iterator collidelist(list<Rect>&);
         
-        bool collidelistall(Rect[], size_t);
-        bool collidelistall(vector<Rect>&);
-        bool collidelistall(list<Rect>&);
+        vector<int>* collidelistall(Rect[], size_t);
+        vector<int>* collidelistall(vector<Rect>&);
+        vector<list<Rect>::iterator>* collidelistall(list<Rect>&);
         
         // collidedict
         // collidedictall

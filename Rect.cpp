@@ -243,21 +243,24 @@ list<Rect>::iterator Rect::collidelist(list<Rect>& lr){
     return lr.end();
 }
 
-bool Rect::collidelistall(Rect vr[], size_t size){
+vector<int>* Rect::collidelistall(Rect vr[], size_t size){
+    vector<int>* vi = new vector<int>();
     for(int i=0; i<size; i++)
         if(!colliderect(vr[i]))
-            return false;
-    return true;
+            vi->push_back(i);
+    return vi;
 }
-bool Rect::collidelistall(vector<Rect>& vr){
+vector<int>* Rect::collidelistall(vector<Rect>& vr){
+    vector<int>* vi = new vector<int>();
     for(int i=0; i<vr.size(); i++)
         if(!colliderect(vr[i]))
-            return false;
-    return true;
+            vi->push_back(i);
+    return vi;
 }
-bool Rect::collidelistall(list<Rect>& vr){
-    for(Rect r : vr)
-        if(!colliderect(r))
-            return false;
-    return true;
+vector<list<Rect>::iterator>* Rect::collidelistall(list<Rect>& vr){
+    vector<list<Rect>::iterator>* vi = new vector<list<Rect>::iterator>();
+    for(list<Rect>::iterator it = vr.begin(); it!=vr.end(); it++)
+        if(!colliderect(*it))
+            vi->push_back(it);
+    return vi;
 }
